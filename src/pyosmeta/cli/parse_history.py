@@ -1,6 +1,6 @@
-""" parse_history.py - Parse through the commit history
+""" Parse a repo's commit history and extract contributor information.
 
-This is a script that only needs to be run once.
+Note: This is a script that only needs to be run once.
 
 It:
 

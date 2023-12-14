@@ -1,7 +1,9 @@
+"""file_io.py - File input/output functions"""
 import pickle
 import urllib.request
+import yaml
 
-import ruamel.yaml
+
 from typing import Dict, List, Union
 
 
@@ -12,7 +14,8 @@ def load_pickle(filename):
 
 
 def _list_to_dict(a_list: List, a_key: str) -> Dict:
-    """Takes a yaml file opened and turns into a dictionary
+    """Converts a list, such as an open yaml file, to a dictionary.
+    
     The dict structure is key (gh_username) and then a dictionary
     containing all information for the username
 
@@ -73,7 +76,7 @@ def open_yml_file(file_path: str) -> dict:
     # the contrib class
     try:
         with urllib.request.urlopen(file_path) as f:
-            return ruamel.yaml.safe_load(f)
+            return yaml.safe_load(f)
     except urllib.error.URLError as url_error:
         print("Oops - can find the url", file_path, url_error)
 
@@ -98,7 +101,7 @@ def export_yaml(filename: str, data_list: list):
 
     with open(filename, "w") as file:
         # Create YAML object with RoundTripDumper to keep key order intact
-        yaml = ruamel.yaml.YAML(typ="rt")
+        yaml = yaml.YAML(typ="rt")
         yaml.default_flow_style = False
         # Set the indent parameter to 2 for the yaml output
         yaml.indent(mapping=4, sequence=4, offset=2)

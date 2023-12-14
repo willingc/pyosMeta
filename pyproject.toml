@@ -36,6 +36,7 @@ dependencies = [
     "requests",
     "python-dotenv",
     "pydantic>=2.0",
+    "PyYAML >= 5.1"  # PyYAML 5.1 is required for Python 3.8+ support
 ]
 
 # This is the metadata that pip reads to understand what versions your package supports

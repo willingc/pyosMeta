@@ -1,7 +1,6 @@
-ruamel.yaml
-pre-commit
 requests
 python-dotenv
+git-python  # needed for parse_history script
 
 # Build requirements
 pdm

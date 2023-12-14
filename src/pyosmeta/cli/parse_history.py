@@ -1,15 +1,16 @@
-"""
+""" parse_history.py - Parse through the commit history
+
 This is a script that only needs to be run once.
 
-it:
+It:
 
 1. gets a list of all contributors
 2. parses through the commit history (locally) to figure out when they
 were added to the contributor.yml file
-3. then it adds a date_Added key for that person
+3. then it adds a `date_Added` key for that person
 
-This will allow us to ensure the yaml file retains order when users are
-highlighted as "new" and also for diff's in git.
+This script will allow us to ensure the yaml file retains order when users are
+highlighted as "new" and also for diffs in git.
 
 """
 

@@ -11,6 +11,6 @@ __all__ = (
 )
 
 try:
-    from ._version_generated import __version__
+    from . import __version__
 except ImportError:
     __version__ = "unreleased"

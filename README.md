@@ -1,4 +1,15 @@
-# PyOS Update and Clean Contributor & Peer Review Metadata
+# pyosmeta (was: update-web-metadata)
+
+[![PyPI](https://img.shields.io/pypi/v/pyosmeta.svg)](https://pypi.org/project/pyosmeta/)
+[![.github/workflows/test-run-script.yml](https://github.com/pyOpenSci/update-web-metadata/actions/workflows/test-run-script.yml/badge.svg)](https://github.com/pyOpenSci/update-web-metadata/actions/workflows/test-run-script.yml)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/pyopensci/update-web-metadata/blob/master/LICENSE)
+
+## Description
+
+**pyosmeta** provides the tools and scripts used to manage [pyOpenSci](https://pyopensci.org]'s contributor and peer review metadata.
+
+## Installation
+
 
 This repo contains a small module and 3 CLI scripts.
 
@@ -220,3 +231,5 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+## License

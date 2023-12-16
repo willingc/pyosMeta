@@ -80,4 +80,4 @@ expected to follow the [pyOpenSci Code of Conduct]() **TODO: Add link**.
 
 ## License
 
-[MIT License](./LICENSE.txt)
+[MIT License](./LICENSE)

@@ -34,8 +34,8 @@ To run this script, you can call the following at the command line:
 This script parses through our (_accepted_) review issues to find packages that have been accepted. It then grabs each reviews editor, reviewers and package authors / maintainers. This information allows us to
 
 1. Update a contributor's peer review metadata in the contributors.yml file in the third script.
-1. Update the pyOpenSci website's package listing with the package's DOI, documentation URL.
-1. Update the package's stats including stars, contributors, etc. using the GitHub API
+2. Update the pyOpenSci website's package listing with the package's DOI, documentation URL.
+3. Update the package's stats including stars, contributors, etc. using the GitHub API
 
 ## process_reviews.py script
 
@@ -47,8 +47,8 @@ This final script is a bridge between the first it uses pickle files outputted f
 first two scripts to update each contributors peer review contributions including
 
 1. packages submitted or reviewed
-1. packages in which the contributor served as editors
-1. contributor types associated with peer review including:
+2. packages in which the contributor served as editors
+3. contributor types associated with peer review including:
 
 - peer-review
 - package-maintainer
@@ -60,17 +60,18 @@ contributor search and filter functionality that you can see here.](https://www.
 
 ## Local setup
 
-To begin:
+1. Create a local environment and activate it. If you are using conda:
 
-1. Create a local environment and activate it.
-If you are using conda:
+   ```bash
+   mamba create -n pyos-meta python=3.10
+   mamba activate pyos-meta
+   ``` 
 
-```bash
-mamba create -n pyos-meta python=3.10
-mamba activate pyos-meta
-````
-2. Install the package in editable model and associated development dependencies:
-   `pip install -e ".[dev]"`
+2. Install the package in editable mode and associated development dependencies:
+
+```
+pip install -e ".[dev]"
+```
 
 ### Setup token to authenticate with the GitHub API
 
@@ -147,7 +148,7 @@ This script is a bridge between `update-contributors` and `update-reviews`. It p
 `update-reviews.pickle` file and
 
 1. updates contributor name in the review data (often the github username is there but the first and last name is missing). This allows us to publish the maintainer names (rather than github usernames) [on our website package listing.](https://www.pyopensci.org/python-packages.html#explore-our-accepted-scientific-python-open-source-packages)
-1. Updates each review issue contributor's name in the contributor metadata. This allows us to ensure we have updated contributor types, package submission information etc, in the contributor.yml file on our website.
+2. Updates each review issue contributor's name in the contributor metadata. This allows us to ensure we have updated contributor types, package submission information etc, in the contributor.yml file on our website.
 
 To run:
 `update_reviewers`

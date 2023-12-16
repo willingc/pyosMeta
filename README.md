@@ -6,7 +6,8 @@
 
 ## Description
 
-**pyosmeta** provides the tools and scripts used to manage [pyOpenSci](https://pyopensci.org)'s contributor and peer review metadata.
+**pyosmeta** provides the tools and scripts used to manage [pyOpenSci](https://pyopensci.org)'s contributor and peer
+review metadata.
 This repo contains a small module and several CLI scripts, including:
 - `parse-history`
 - `update-contributors`
@@ -61,7 +62,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
+Contributions of any kind welcome!
 
 ## Contributing
 
@@ -73,7 +75,8 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 ## Code of Conduct
 
-Everyone interacting in the pyOpenSci project's codebases, issue trackers, chat rooms, and communication venues is expected to follow the [pyOpenSci Code of Conduct]() **TODO: Add link**.
+Everyone interacting in the pyOpenSci project's codebases, issue trackers, chat rooms, and communication venues is
+expected to follow the [pyOpenSci Code of Conduct]() **TODO: Add link**.
 
 ## License
 

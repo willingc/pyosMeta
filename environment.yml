@@ -1,4 +1,4 @@
-name: pyosMeta
+name: pyosmeta-env
 channels:
   - conda-forge
 dependencies:

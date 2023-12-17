@@ -1,23 +1,25 @@
+"""File I/O Utilities"""
 import pickle
+import urllib.error
 import urllib.request
 
 import ruamel.yaml
 from ruamel.yaml import YAML
-from typing import Dict, List, Union
+from typing import Dict
 
 
 def load_pickle(filename):
-    """Opens a pickle"""
+    """Opens a pickle and return its contents"""
     with open(filename, "rb") as f:
         return pickle.load(f)
 
 
-def _list_to_dict(a_list: List, a_key: str) -> Dict:
+def _list_to_dict(source, a_key: str) -> Dict:
     """Takes a yaml file opened and turns into a dictionary
     The dict structure is key (gh_username) and then a dictionary
     containing all information for the username
 
-    a_list : list
+    source :
         A list of dictionary objects returned from load website yaml
     a_key : str
         A string representing the dict key to use as the main key to call
@@ -25,11 +27,11 @@ def _list_to_dict(a_list: List, a_key: str) -> Dict:
 
     """
 
-    return {a_dict[a_key].lower(): a_dict for a_dict in a_list}
+    return {a_dict[a_key].lower(): a_dict for a_dict in source}
 
 
-def create_paths(repos: Union[list[str], str]) -> Union[list[str], str]:
-    """ """
+def create_paths() -> list[str] | str:
+    """Create paths by composing URLs and repos"""
     base_url = "https://raw.githubusercontent.com/pyOpenSci/"
     end_url = "/main/.all-contributorsrc"
     repos = [
@@ -39,10 +41,9 @@ def create_paths(repos: Union[list[str], str]) -> Union[list[str], str]:
         "software-review",
         "update-web-metadata",
     ]
-    if isinstance(repos, list):
-        all_paths = [base_url + repo + end_url for repo in repos]
-    else:
-        all_paths = base_url + repos + end_url
+
+    # Compose paths for all of the repos
+    all_paths = [base_url + repo + end_url for repo in repos]
 
     return all_paths
 
@@ -52,12 +53,12 @@ def load_website_yml(key: str, url: str):
     This opens a website contrib yaml file and turns it in a
     dictionary
     """
-    yml_list = open_yml_file(url)
+    contributors = open_yml_file(url)
 
-    return _list_to_dict(yml_list, key)
+    return _list_to_dict(contributors, key)
 
 
-def open_yml_file(file_path: str) -> dict:
+def open_yml_file(file_path: str) -> Dict:
     """Open & deserialize YAML file to dictionary.
 
     Parameters
@@ -69,9 +70,6 @@ def open_yml_file(file_path: str) -> dict:
     -------
         Dictionary containing the structured data in the YAML file.
     """
-
-    # TODO: this used to be self.web_yml so i'll need to reorganized
-    # the contrib class
     try:
         with urllib.request.urlopen(file_path) as f:
             yaml = YAML(typ="safe", pure=True)
@@ -80,7 +78,7 @@ def open_yml_file(file_path: str) -> dict:
         print("Oops - can find the url", file_path, url_error)
 
 
-def export_yaml(filename: str, data_list: list):
+def export_yaml(filename: str, data):
     """Update website contrib file with the information grabbed from GitHub
     API
 
@@ -91,8 +89,8 @@ def export_yaml(filename: str, data_list: list):
 
     filename : str
         Name of the output contributor filename ().yml format)
-    data_list :  list
-        A list containing contributor data for the website.
+    data :
+        Contributor data for the website.
 
     Returns
     -------
@@ -104,18 +102,15 @@ def export_yaml(filename: str, data_list: list):
         yaml.default_flow_style = False
         # Set the indent parameter to 2 for the yaml output
         yaml.indent(mapping=4, sequence=4, offset=2)
-        yaml.dump(data_list, file)
+        yaml.dump(data, file)
 
 
-# TODO: Double check - i may be able to combine this with the other clean
-# function created
-def clean_string(astr: str) -> str:
-    """
-    Clean - remove strings starting with "*id0" and "[]".
+def clean_string(source: str) -> str:
+    """Clean - remove strings starting with "*id0" and "[]".
 
     Parameters
     ----------
-    astr : str
+    source : str
         The string to be cleaned.
 
     Returns
@@ -128,12 +123,12 @@ def clean_string(astr: str) -> str:
     >>> input_string = "packages-submitted: &id003 []"
     >>> clean_string(input_string)
     "packages-submitted: []"
+
     """
     patterns = ["*id001", "*id002", "*id003", "*id004"]
-    # pattern = r"&id0\w{0,4}"
     for pattern in patterns:
-        astr = astr.replace(pattern, "")
-    return astr.replace("[]", "")
+        source = source.replace(pattern, "")
+    return source.replace("[]", "")
 
 
 def clean_yaml_file(filename):
@@ -141,7 +136,7 @@ def clean_yaml_file(filename):
     with open(filename, "r") as f:
         lines = f.readlines()
 
-    # TODO: regex would be cleaner here
+    fix_indent = False
     cleaned_lines = []
     for i, line in enumerate(lines):
         if i == 0 and line.startswith("  "):
@@ -158,15 +153,15 @@ def clean_yaml_file(filename):
         f.write(cleaned_text)
 
 
-def clean_export_yml(a_dict: Dict[str, Union[str, List[str]]], filename: str) -> None:
+def clean_export_yml(source, filename: str) -> None:
     """Inputs a dictionary with keys - contribs or packages.
     It then converse to a list for export, and creates a cleaned
     YAML file that is jekyll friendly
 
     Parameters
     ----------
-    a_dict : Dict
-        A dictionary containing final pyos metadata information
+    source : Dict
+        A collection of pyos metadata information
     filename : str
         Name of the YML file to export
 
@@ -177,5 +172,5 @@ def clean_export_yml(a_dict: Dict[str, Union[str, List[str]]], filename: str) ->
     """
 
     # Export to yaml
-    export_yaml(filename, a_dict)
+    export_yaml(filename, source)
     clean_yaml_file(filename)

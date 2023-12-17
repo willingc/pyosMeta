@@ -55,4 +55,4 @@ repos:
     hooks:
       - id: isort
         files: \.py$
-        args: ["--profile", "black", --line-length=79]
+        args: ["--profile", "black", --line-length=120]

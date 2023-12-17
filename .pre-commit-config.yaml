@@ -17,13 +17,12 @@ ci:
   autofix_prs: false
   autofix_commit_msg: |
     '[pre-commit.ci 🤖] Apply code format tools to PR'
-  autoupdate_schedule: weekly
+  autoupdate_schedule: quarterly
 
 repos:
-  # Misc commit checks
+  # Misc commit checks ref: https://github.com/pre-commit/pre-commit-hooks#hooks-available
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
-    # ref: https://github.com/pre-commit/pre-commit-hooks#hooks-available
     hooks:
       - id: end-of-file-fixer
       # Lint: Check for files with names that would conflict on a

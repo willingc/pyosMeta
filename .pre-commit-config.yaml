@@ -1,31 +1,30 @@
-# pre-commit is a tool that you run locally
-# to perform a predefined set of tasks manually and/or
-# automatically before git commits are made.
-# Here we are using pre-commit with the precommit.ci bot to implement
-# code fixes automagically in pr's. You will still want to install pre-commit
-# to run locally
-# Config reference: https://pre-commit.com/#pre-commit-configyaml---top-level
-# To run on a pr, add a comment with the text "pre-commit.ci run"
-# Common tasks
+# pre-commit is a tool that you run locally to perform a predefined set of tasks manually and/or automatically
+# before git commits are made.
 #
+# We use pre-commit with the precommit.ci bot to check PRs.default_install_hook_types:
+# In the future, we may enable code fixes automagically in PRs.
+
+# You will want to install pre-commit to run locally
+# Config reference: https://pre-commit.com/#pre-commit-configyaml---top-level
+#
+# To run on a PR, add a comment on the PR in GitHub with the text "pre-commit.ci run"
+#
+# Common tasks
 # - Run on all files:   pre-commit run --all-files
 # - Register git hooks: pre-commit install --install-hooks
 
 ci:
   autofix_prs: false
-  #skip: [flake8, end-of-file-fixer]
   autofix_commit_msg: |
     '[pre-commit.ci 🤖] Apply code format tools to PR'
-  # Update hook versions every quarter (so we don't get hit with weekly update pr's)
   autoupdate_schedule: weekly
 
 repos:
   # Misc commit checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     # ref: https://github.com/pre-commit/pre-commit-hooks#hooks-available
     hooks:
-      # Autoformat: Makes sure files end in a newline and only a newline.
       - id: end-of-file-fixer
       # Lint: Check for files with names that would conflict on a
       # case-insensitive filesystem like MacOS HFS+ or Windows FAT.
@@ -33,7 +32,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.5
+    rev: v2.2.6
     hooks:
       - id: codespell
         additional_dependencies:
@@ -46,12 +45,12 @@ repos:
       - id: flake8
 
   - repo: https://github.com/psf/black
-    rev: 23.9.1
+    rev: 23.12.0
     hooks:
       - id: black
 
   - repo: https://github.com/PyCQA/isort
-    rev: 5.12.0
+    rev: 5.13.2
     hooks:
       - id: isort
         files: \.py$

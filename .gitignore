@@ -4,7 +4,6 @@ pack*.yml
 *.pickle
 all_contribs.pickle
 all_contribs_dict.pickle
-.env
 .vscode/
 .idea/
 .token

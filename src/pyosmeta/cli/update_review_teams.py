@@ -1,24 +1,16 @@
-"""
-This script parses through our reviews and contributors and:
+"""Update review teams
 
-1. Updates reviewer, editor and maintainer data in the contributor.yml file to
-ensure all packages they supported are listed there.
-1b: And that they have a listing as peer-review under contributor type
-2. Updates the packages metadata with the participants names if it's missing
-3. FUTURE: finally it looks to see if we are missing review participants from
-the review issues in the contributor file and updates that file.
+This script parses through our reviews and contributors. It:
 
-This script assumes that update_contributors and update_reviews has been run.
-Rather than hit any api's it just updates information from the issues.
+1. Updates reviewer, editor and maintainer data in the `contributor.yml` file.
+   a. Ensure all packages they supported are listed there.
+   b. And that they have a listing as peer-review under contributor type
+2. Updates the package's metadata with the participants names if it's missing
+
+This script assumes that `update_contributors` and `update_reviews` scripts have been run.
+Rather than hit any api's it just updates information from the repo issues.
+
 To run: update_reviewers
-
-# TODO - FEATURE we have some packages that were NOT approved but we had
-# editors and reviewers.
-# We need to acknowledge these people as well. maybe tag them with waiting on
-# maintainer response??
-# TODO: package-wide feature: create no update flag for entries
-# TODO: make sure we can add a 3rd or 4th reviewer - crowsetta has this as
-# will biocypher
 
 """
 import os

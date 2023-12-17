@@ -4,77 +4,49 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pyosmeta"
-version = "0.1"
+version = "0.2"
 description = "Tools that update the pyOpenSci contributor and review metadata that is posted on our website"
 authors = [{ name = "Leah Wasser", email = "leah@pyopensci.org" }]
 maintainers = [
-    { name = "pyOpenSci", email = "admin@pyopensci.org" }, # Optional
+    { name = "pyOpenSci", email = "admin@pyopensci.org" },
 ]
-
 classifiers = [
-    # How mature is this project? Common values are
-    #   3 - Alpha
-    #   4 - Beta
-    #   5 - Production/Stable
     "Development Status :: 4 - Beta",
-
-    # Indicate who your project is intended for
     "Intended Audience :: Developers",
     "Topic :: Software Development :: Build Tools",
-
-    # Pick your license  - we suggest MIT, BSD3 or Apache if you are corporate
     "License :: OSI Approved :: MIT License",
-    # Specify the Python versions ensuring that you indicate you support Python 3.
-    # this is only for pypi and other metadata associated with your package - for your users to see
-    "Programming Language :: Python :: 3 :: Only", # BE sure to specify that you use python 3.x
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
 ]
-
-
 dependencies = [
-    "ruamel-yaml>=0.17.21",
-    "requests",
-    "python-dotenv",
+    "GitPython",
     "pydantic>=2.0",
+    "python-dotenv",
     "requests",
-    "python-dotenv"
+    "ruamel-yaml>=0.17.21",
 ]
-
-
-# This is the metadata that pip reads to understand what versions your package supports
 requires-python = ">=3.10"
 readme = "README.md"
-license = { text = "MIT" }
-
+license = { file = "LICENSE" }
 
 [project.optional-dependencies]
 dev = [
-  "pre-commit"
+    "pre-commit",
+    "pytest",
 ]
-# Examples listed include a pattern for specifying where the package tracks
-# issues, where the source is hosted, where to say thanks to the package
-# maintainers, and where to support the project financially. The key is
-# what's used to render the link text on PyPI.
-[project.urls] # Optional
+
+[project.urls]
 "Homepage" = "https://www.pyopensci.org"
 "Bug Reports" = "https://github.com/pyopensci/pyosmeta/issues"
-#"Funding" = ""
-"Source" = "https://github.com/pyopensci/pyosmeta/issues"
+"Source" = "https://github.com/pyopensci/pyosmeta"
 
-
-# These are entry points that allow you to surface specific functionality
-# for a user to run directly from the package.
-[project.scripts] # Optional
+[project.scripts]
 parse-history = "pyosmeta.cli.parse_history:main"
 update-contributors = "pyosmeta.cli.update_contributors:main"
 update-reviews = "pyosmeta.cli.process_reviews:main"
 update-review-teams = "pyosmeta.cli.update_review_teams:main"
 
-
-# Right now i'm not using pdm to add dependencies.
-# Will explore that later
-# Below using dynamic versioning / which is setuptools scm like
 [tool.black]
 line-length = 120
 target-version = ['py310']
@@ -84,7 +56,5 @@ profile = "black"
 multi_line_output = 3
 py_version = 27
 
-# Precommit ignores this config so i added a .flake8 file
-# but why did it ignore it?
 [tool.flake8]
 extend-ignore = ["E203", "W503"]

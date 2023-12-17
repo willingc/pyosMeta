@@ -3,13 +3,7 @@ from datetime import datetime
 
 import requests
 from dataclasses import dataclass
-from pydantic import (
-    AliasChoices,
-    BaseModel,
-    ConfigDict,
-    Field,
-    field_validator,
-)
+from pydantic import AliasChoices, BaseModel, ConfigDict, Field, field_validator
 from typing import Any, Optional
 
 from pyosmeta.contributors import ProcessContributors, UrlValidatorMixin
@@ -27,11 +21,7 @@ def clean_date(a_date: Optional[str]) -> str:
         return "missing"
     else:
         try:
-            return (
-                datetime.strptime(a_date, "%Y-%m-%dT%H:%M:%SZ")
-                .date()
-                .strftime("%Y-%m-%d")
-            )
+            return datetime.strptime(a_date, "%Y-%m-%dT%H:%M:%SZ").date().strftime("%Y-%m-%d")
         except TypeError as t_error:
             print("Oops - missing data. Setting date to missing", t_error)
             return "missing"
@@ -148,9 +138,7 @@ class ReviewModel(BaseModel):
     )
 
     package_name: Optional[str] = ""
-    package_description: str = Field(
-        "", validation_alias=AliasChoices("one-line_description_of_package")
-    )
+    package_description: str = Field("", validation_alias=AliasChoices("one-line_description_of_package"))
     submitting_author: dict[str, Optional[str]] = {}
     all_current_maintainers: list[dict[str, str | None]] = {}
     repository_link: Optional[str] = None
@@ -257,9 +245,7 @@ class ReviewModel(BaseModel):
         Remove the link data.
         """
 
-        user["github_username"] = user["github_username"].replace(
-            "https://github.com/", ""
-        )
+        user["github_username"] = user["github_username"].replace("https://github.com/", "")
         user["name"] = re.sub(r"\[|\]", "", user["name"])
 
         return user
@@ -310,10 +296,7 @@ class ProcessIssues:
 
     @property
     def api_endpoint(self):
-        url = (
-            f"https://api.github.com/repos/{self.org}/{self.repo_name}/"
-            f"issues?labels={self.label_name}&state=all"
-        )
+        url = f"https://api.github.com/repos/{self.org}/{self.repo_name}/" f"issues?labels={self.label_name}&state=all"
         return url
 
     # Set up the API endpoint
@@ -357,9 +340,7 @@ class ProcessIssues:
         """
         Returns true if starts with any of the 3 items below.
         """
-        return string.startswith(
-            ("Submitting", "Editor", "Reviewer", "All current maintainers")
-        )
+        return string.startswith(("Submitting", "Editor", "Reviewer", "All current maintainers"))
 
     def _clean_name(self, a_str: str) -> str:
         """Helper to strip unwanted chars from text"""
@@ -407,9 +388,7 @@ class ProcessIssues:
             meta[a_key] = self._clean_name(line_item[0])
         return meta
 
-    def parse_issue_header(
-        self, issues: list[str], total_lines: int = 20
-    ) -> dict[str, str]:
+    def parse_issue_header(self, issues: list[str], total_lines: int = 20) -> dict[str, str]:
         """
         A function that parses through the header of an issue.
         It returns
@@ -453,9 +432,7 @@ class ProcessIssues:
             review_clean = {
                 key: value
                 for key, value in review[pkg_name].items()
-                if not key.startswith("##")
-                and not key.startswith("---")
-                and not key.startswith("-_[x]_i_agree")
+                if not key.startswith("##") and not key.startswith("---") and not key.startswith("-_[x]_i_agree")
             }
             review[pkg_name] = review_clean
             # filtered = {}
@@ -511,9 +488,7 @@ class ProcessIssues:
 
         return issue_meta
 
-    def get_repo_endpoints(
-        self, review_issues: dict[str, str]
-    ) -> dict[str, str]:
+    def get_repo_endpoints(self, review_issues: dict[str, str]) -> dict[str, str]:
         """
         Returns a list of repository endpoints
 
@@ -537,9 +512,7 @@ class ProcessIssues:
             pattern = r"[\(\)\[\]?]"
             owner = re.sub(pattern, "", owner)
             repo = re.sub(pattern, "", repo)
-            all_repos[
-                a_package
-            ] = f"https://api.github.com/repos/{owner}/{repo}"
+            all_repos[a_package] = f"https://api.github.com/repos/{owner}/{repo}"
         return all_repos
 
     def parse_comment(self, issue: dict[str, str]) -> tuple[str, list[str]]:
@@ -567,21 +540,13 @@ class ProcessIssues:
         lines = [a_line.strip("\r").strip() for a_line in lines]
         # Some users decide to hold the issue titles.
         # For those, clean the markdown bold ** element
-        lines = [
-            line.replace("**", "").strip()
-            for line in lines
-            if line.strip() != ""
-        ]
+        lines = [line.replace("**", "").strip() for line in lines if line.strip() != ""]
         # You need a space after : or else it will break https:// in two
         body_data = [line.split(": ") for line in lines if line.strip() != ""]
 
         # Loop through issue header and grab relevant review metadata
         name_index = next(
-            (
-                i
-                for i, sublist in enumerate(body_data)
-                if sublist[0] == "Package Name"
-            ),
+            (i for i, sublist in enumerate(body_data) if sublist[0] == "Package Name"),
             None,
         )
 
@@ -627,9 +592,7 @@ class ProcessIssues:
         """
         stats_dict = {}
         # Get the url (normally the docs) and description of a repo!
-        response = requests.get(
-            url, headers={"Authorization": f"token {self.GITHUB_TOKEN}"}
-        )
+        response = requests.get(url, headers={"Authorization": f"token {self.GITHUB_TOKEN}"})
 
         # TODO: should this be some sort of try/except how do i catch these
         # Response errors in the best way possible?
@@ -681,16 +644,12 @@ class ProcessIssues:
             the last commit to the repo
         """
         url = repo + "/commits"
-        response = requests.get(
-            url, headers={"Authorization": f"token {self.GITHUB_TOKEN}"}
-        ).json()
+        response = requests.get(url, headers={"Authorization": f"token {self.GITHUB_TOKEN}"}).json()
         date = response[0]["commit"]["author"]["date"]
 
         return date
 
-    def get_categories(
-        self, issue_list: list[list[str]], fmt: bool = True
-    ) -> list[str]:
+    def get_categories(self, issue_list: list[list[str]], fmt: bool = True) -> list[str]:
         """Parse through a pyOS review issue and grab categories associated
         with a package
 
@@ -706,11 +665,7 @@ class ProcessIssues:
         """
         # Find the starting index of the category section
         try:
-            index = next(
-                i
-                for i, sublist in enumerate(issue_list)
-                if "## Scope" in sublist
-            )
+            index = next(i for i, sublist in enumerate(issue_list) if "## Scope" in sublist)
             # Iterate from scope index to first line starting with " - ["
             # To find list of category check boxes
             for i in range(index + 1, len(issue_list)):
@@ -722,11 +677,7 @@ class ProcessIssues:
 
         # Get checked categories for package
         cat_list = issue_list[cat_index : cat_index + 10]
-        selected = [
-            item[0] for item in cat_list if re.search(r"- \[[xX]\] ", item[0])
-        ]
+        selected = [item[0] for item in cat_list if re.search(r"- \[[xX]\] ", item[0])]
         cleaned = [re.sub(r"- \[[xX]\] ", "", item) for item in selected]
-        categories = [
-            re.sub(r"(\w+) (\w+)", r"\1-\2", item) for item in cleaned
-        ]
+        categories = [re.sub(r"(\w+) (\w+)", r"\1-\2", item) for item in cleaned]
         return [item.lower().replace("[^1]", "") for item in categories]

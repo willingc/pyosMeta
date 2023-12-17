@@ -15,9 +15,7 @@ from pyosmeta.file_io import create_paths, load_pickle, open_yml_file
 def main():
     update_dates = False
     update_all = False
-    parser = argparse.ArgumentParser(
-        description="A CLI script to update pyOpenSci contributors"
-    )
+    parser = argparse.ArgumentParser(description="A CLI script to update pyOpenSci contributors")
     parser.add_argument(
         "--update",
         type=str,
@@ -40,9 +38,7 @@ def main():
 
     # Get existing contribs from pyopensci.github.io repo (website data)
     base_url = "https://raw.githubusercontent.com/pyOpenSci/"
-    web_yaml_path = (
-        base_url + "pyopensci.github.io/main/_data/contributors.yml"
-    )
+    web_yaml_path = base_url + "pyopensci.github.io/main/_data/contributors.yml"
 
     web_contribs = open_yml_file(web_yaml_path)
 
@@ -51,9 +47,7 @@ def main():
     for a_contrib in web_contribs:
         print(a_contrib["github_username"])
         try:
-            all_contribs[a_contrib["github_username"].lower()] = PersonModel(
-                **a_contrib
-            )
+            all_contribs[a_contrib["github_username"].lower()] = PersonModel(**a_contrib)
         except ValidationError as ve:
             print(a_contrib["github_username"])
             print(ve)

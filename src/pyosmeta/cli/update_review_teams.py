@@ -43,17 +43,13 @@ def main():
         for issue_role in contrib_types.keys():
             if issue_role == "all_current_maintainers":
                 # Loop through each maintainer in the list
-                for i, a_maintainer in enumerate(
-                    issue_meta.all_current_maintainers
-                ):
+                for i, a_maintainer in enumerate(issue_meta.all_current_maintainers):
                     gh_user = get_clean_user(a_maintainer["github_username"])
 
                     if gh_user not in contribs.keys():
                         print("Found a new user!", gh_user)
                         new_contrib = process_contribs.get_user_info(gh_user)
-                        new_contrib["date_added"] = datetime.now().strftime(
-                            "%Y-%m-%d"
-                        )
+                        new_contrib["date_added"] = datetime.now().strftime("%Y-%m-%d")
                         try:
                             contribs[gh_user] = PersonModel(**new_contrib)
                         except ValidationError as ve:
@@ -61,36 +57,26 @@ def main():
 
                     # Update user package contributions (if it's unique)
                     review_key = contrib_types[issue_role][0]
-                    contribs[gh_user].add_unique_value(
-                        review_key, pkg_name.lower()
-                    )
+                    contribs[gh_user].add_unique_value(review_key, pkg_name.lower())
 
                     # Update user contrib list (if it's unique)
                     review_roles = contrib_types[issue_role][1]
-                    contribs[gh_user].add_unique_value(
-                        "contributor_type", review_roles
-                    )
+                    contribs[gh_user].add_unique_value("contributor_type", review_roles)
 
                     # If name is missing in issue, populate from contribs
                     if a_maintainer["name"] == "":
                         name = getattr(contribs[gh_user], "name")
-                        packages[pkg_name].all_current_maintainers[i][
-                            "name"
-                        ] = name
+                        packages[pkg_name].all_current_maintainers[i]["name"] = name
 
             else:
                 # Else we are processing editors, reviewers...
-                gh_user = get_clean_user(
-                    getattr(packages[pkg_name], issue_role)["github_username"]
-                )
+                gh_user = get_clean_user(getattr(packages[pkg_name], issue_role)["github_username"])
 
                 if gh_user not in contribs.keys():
                     # If they aren't already in contribs, add them
                     print("Found a new user!", gh_user)
                     new_contrib = process_contribs.get_user_info(gh_user)
-                    new_contrib["date_added"] = datetime.now().strftime(
-                        "%Y-%m-%d"
-                    )
+                    new_contrib["date_added"] = datetime.now().strftime("%Y-%m-%d")
                     try:
                         contribs[gh_user] = PersonModel(**new_contrib)
                     except ValidationError as ve:
@@ -98,22 +84,16 @@ def main():
 
                 # Update user package contributions (if it's unique)
                 review_key = contrib_types[issue_role][0]
-                contribs[gh_user].add_unique_value(
-                    review_key, pkg_name.lower()
-                )
+                contribs[gh_user].add_unique_value(review_key, pkg_name.lower())
 
                 # Update user contrib list (if it's unique)
                 review_roles = contrib_types[issue_role][1]
-                contribs[gh_user].add_unique_value(
-                    "contributor_type", review_roles
-                )
+                contribs[gh_user].add_unique_value("contributor_type", review_roles)
 
                 # If users's name is missing in issue, populate from contribs
                 if getattr(issue_meta, issue_role)["name"] == "":
                     attribute_value = getattr(packages[pkg_name], issue_role)
-                    attribute_value["name"] = getattr(
-                        contribs[gh_user], "name"
-                    )
+                    attribute_value["name"] = getattr(contribs[gh_user], "name")
 
     # Export to yaml
     contribs_ls = [model.model_dump() for model in contribs.values()]

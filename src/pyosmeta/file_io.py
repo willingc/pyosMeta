@@ -158,9 +158,7 @@ def clean_yaml_file(filename):
         f.write(cleaned_text)
 
 
-def clean_export_yml(
-    a_dict: Dict[str, Union[str, List[str]]], filename: str
-) -> None:
+def clean_export_yml(a_dict: Dict[str, Union[str, List[str]]], filename: str) -> None:
     """Inputs a dictionary with keys - contribs or packages.
     It then converse to a list for export, and creates a cleaned
     YAML file that is jekyll friendly

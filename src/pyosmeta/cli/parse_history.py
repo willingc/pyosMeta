@@ -23,9 +23,7 @@ from pyosmeta.file_io import open_yml_file
 
 def main():
     base_url = "https://raw.githubusercontent.com/pyOpenSci/"
-    web_yaml_path = (
-        base_url + "pyopensci.github.io/main/_data/contributors.yml"
-    )
+    web_yaml_path = base_url + "pyopensci.github.io/main/_data/contributors.yml"
 
     web_contribs = open_yml_file(web_yaml_path)
 
@@ -34,16 +32,12 @@ def main():
             if name.lower() in data["name"].lower():
                 return data["github_username"]
 
-    repo_path = os.path.join(
-        "/Users/leahawasser/Documents/GitHub/pyos/", "pyopensci.github.io"
-    )
+    repo_path = os.path.join("/Users/leahawasser/Documents/GitHub/pyos/", "pyopensci.github.io")
 
     file_path = os.path.join("_data", "contributors.yml")
 
     if not os.path.isfile(os.path.join(repo_path, file_path)):
-        raise ValueError(
-            f"The file '{file_path}' does not exist in the repository."
-        )
+        raise ValueError(f"The file '{file_path}' does not exist in the repository.")
 
     repo = git.Repo(repo_path)
     all_commits = list(repo.iter_commits("main", paths=file_path))

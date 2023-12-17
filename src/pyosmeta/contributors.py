@@ -5,22 +5,13 @@ import re
 import requests
 from dataclasses import dataclass
 from dotenv import load_dotenv
-from pydantic import (
-    AliasChoices,
-    BaseModel,
-    ConfigDict,
-    Field,
-    field_serializer,
-    field_validator,
-)
+from pydantic import AliasChoices, BaseModel, ConfigDict, Field, field_serializer, field_validator
 from typing import List, Optional, Set, Tuple, Union
 
 
 class UrlValidatorMixin:
     # Check fields is false given mixin is used by two diff classes
-    @field_validator(
-        "website", "documentation", mode="before", check_fields=False
-    )
+    @field_validator("website", "documentation", mode="before", check_fields=False)
     @classmethod
     def format_url(cls, url: str) -> str:
         """Append https to the beginning of URL if it doesn't exist & cleanup
@@ -81,25 +72,15 @@ class PersonModel(BaseModel, UrlValidatorMixin):
     title: Optional[Union[list[str], str]] = None
     sort: Optional[int] = None
     bio: Optional[str] = None
-    organization: Optional[str] = Field(
-        None, validation_alias=AliasChoices("company")
-    )
+    organization: Optional[str] = Field(None, validation_alias=AliasChoices("company"))
     date_added: Optional[str] = ""
     deia_advisory: Optional[bool] = False
-    editorial_board: Optional[bool] = Field(
-        None, validation_alias=AliasChoices("editorial-board")
-    )
+    editorial_board: Optional[bool] = Field(None, validation_alias=AliasChoices("editorial-board"))
     advisory: Optional[bool] = False
-    twitter: Optional[str] = Field(
-        None, validation_alias=AliasChoices("twitter_username")
-    )
-    mastodon: Optional[str] = Field(
-        None, validation_alias=AliasChoices("mastodon_username", "mastodon")
-    )
+    twitter: Optional[str] = Field(None, validation_alias=AliasChoices("twitter_username"))
+    mastodon: Optional[str] = Field(None, validation_alias=AliasChoices("mastodon_username", "mastodon"))
     orcidid: Optional[str] = None
-    website: Optional[str] = Field(
-        None, validation_alias=AliasChoices("blog", "website")
-    )
+    website: Optional[str] = Field(None, validation_alias=AliasChoices("blog", "website"))
     board: Optional[bool] = False
     contributor_type: Set[str] = set()
     packages_editor: Set[str] = set()
@@ -332,9 +313,7 @@ class ProcessContributors:
                 print("Oops - can't process", json_file, e)
         return combined_data
 
-    def get_user_info(
-        self, username: str, aname: Optional[str] = None
-    ) -> dict:
+    def get_user_info(self, username: str, aname: Optional[str] = None) -> dict:
         """
         Get a single user's information from their GitHub username using the
         GitHub API
@@ -380,9 +359,7 @@ class ProcessContributors:
 
         return user_data
 
-    def _update_contrib_type(
-        self, webContribTypes: List, repoContribTypes: List
-    ) -> list:
+    def _update_contrib_type(self, webContribTypes: List, repoContribTypes: List) -> list:
         """
         Compares contrib types for a single gh user from the website to
         what's in the all-contributor bot .json dict. Adds any new contrib
@@ -444,9 +421,7 @@ class ProcessContributors:
             if gh_user in webDict.keys():
                 # Return a list of updated contributor type keys and use it to
                 # update the web dict
-                webDict[gh_user][
-                    "contributor_type"
-                ] = self._update_contrib_type(
+                webDict[gh_user]["contributor_type"] = self._update_contrib_type(
                     webDict[gh_user]["contributor_type"],
                     repoDict[gh_user]["contributor_type"],
                 )

@@ -1,3 +1,4 @@
+"""Update contributors script"""
 import argparse
 import pickle
 from datetime import datetime
@@ -7,12 +8,9 @@ from pydantic import ValidationError
 from pyosmeta.contributors import PersonModel, ProcessContributors
 from pyosmeta.file_io import create_paths, load_pickle, open_yml_file
 
-# TODO - https://stackoverflow.com
-# /questions/55762673/how-to-parse-list-of-models-with-pydantic
-# I can use TypeAdapter to convert the json data to model objects!
-
 
 def main():
+    """Update pyOpenSci contributors"""
     update_dates = False
     update_all = False
     parser = argparse.ArgumentParser(description="A CLI script to update pyOpenSci contributors")
